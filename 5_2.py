@@ -3,10 +3,10 @@ from socket import *
 from time import sleep
 
 
-def handle_client(connectionSocket):
+def process_client(connectionSocket):
     try:
-        message = connectionSocket.recv(1024).decode()
-        filename = message.split()[1]
+        request = connectionSocket.recv(1024).decode()
+        filename = request.split()[1]
 
         with open(filename[1:], "r") as f:
             outputdata = f.read()
@@ -43,7 +43,7 @@ def start_server():
                 f"Соединение установленно из IP-адреса клиента и порта клиента {addr}"
             )
             print()
-            client_thread = Thread(target=handle_client, args=(clientSocket,))
+            client_thread = Thread(target=process_client, args=(clientSocket,))
             client_thread.start()
 
     except KeyboardInterrupt:
